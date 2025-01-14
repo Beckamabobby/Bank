@@ -1,9 +1,9 @@
 import java.lang.NumberFormatException;
 public class Account {
     String name;
-    double shmoney = 0.0;
+    double shmoney = 0.00;
     String password;
-    String[][] history = new String[5][];
+    String[][] history = new String[5][1];
     public Account(String name, String password, double shmoney) {
         this.name = name;
         this.password = password;
@@ -13,23 +13,35 @@ public class Account {
         this.name = name;
         this.password = password;
     }
+    public String toString() {
+        String out = "";
+        out += "\nname: " + name;
+        out += "\nmoney: " + shmoney;
+        out += "\npassword: " + password + "\n";
+        return out;
+    }
     // true: quit, false: relogin
     public boolean sequence() {
         while (true) {
             System.out.println("What do you want to do?");
-            System.out.println("check/deposit/withdraw/transfer/logout/quit");
+            System.out.println("check/deposit/withdraw/transfer/history/logout/quit");
             String in = Main.scanner.nextLine();
             switch (in) {
                 case "check":
                     check();
+                    break;
                 case "deposit":
                     deposit();
+                    break;
                 case "withdraw":
                     withdraw();
+                    break;
                 case "transfer":
-                    withdraw();
+                    transfer();
+                    break;
                 case "history":
                     history();
+                    break;
                 case "quit":
                     return true;
                 case "logout":
@@ -85,6 +97,7 @@ public class Account {
                 hist[2] = shmoney + " -> " + (shmoney-change);
                 addHistory(hist);
                 shmoney -= change;
+                break;
             }
             catch (NumberFormatException e) {
                 System.out.println("That is not a number");
@@ -125,6 +138,13 @@ public class Account {
                 hist[2] = "to " + target;
                 hist[3] = shmoney + " -> " + (shmoney-amount);
                 hist[4] = Main.accounts.get(index).shmoney + " -> " + (Main.accounts.get(index).shmoney+amount);
+                addHistory(hist);
+                String[] otherHist = new String[4];
+                otherHist[0] = "Recieved";
+                otherHist[1] = "$"+amount;
+                otherHist[2] = "From " + name;
+                otherHist[3] = Main.accounts.get(index).shmoney + " -> " + (Main.accounts.get(index).shmoney+amount);
+                Main.accounts.get(index).addHistory(otherHist);
                 Main.accounts.get(index).shmoney += amount;
                 shmoney -= amount;
                 break;

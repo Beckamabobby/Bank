@@ -8,6 +8,7 @@ class Main {
         scanner.close();
     }
     public static void sequence() {
+        outer:
         while (true) {
             System.out.println("What would you like to do?");
             System.out.println("login/new account/quit");
@@ -15,12 +16,18 @@ class Main {
             switch (in) {
                 case "login":
                     if (login()) {
-                        break;
+                        break outer;
                     }
+                    break;
                 case "new account":
                     newAccount();
-                case "quit":
                     break;
+                case "quit":
+                    break outer;
+                /*case "list":
+                    for (int i = 0; i < accounts.size(); i++) {
+                        System.out.println(i + ": " + accounts.get(i).toString());
+                    }*/
             }
         }
     }
@@ -36,6 +43,7 @@ class Main {
             }
             System.out.println("What do you want your password to be?");
             accounts.add(new Account(name, scanner.nextLine()));
+            break;
         }
     }
     public static boolean login() {
@@ -46,19 +54,20 @@ class Main {
             String pass = scanner.nextLine();
             Integer index = getIndex(name);
             if (index == null) {
-                System.out.println("There is a mistake in your username or password");
+                System.out.println("There is a mistake in your username or password1");
                 continue;
             }
-            if (pass != accounts.get(index).password) {
-                System.out.println("There is a mistake in your username or password");
+            if (!pass.equals(accounts.get(index).password)) {
+                System.out.println("There is a mistake in your username or password2");
                 continue;
             }
             return accounts.get(index).sequence();
         }
     }
     public static Integer getIndex(String name) {
+        //System.out.println("Checking for " + name);
         for (int i = 0; i < accounts.size(); i++) {
-            if (accounts.get(i).name == name) {
+            if (accounts.get(i).name.equals(name)) {
                 return i;
             }
         }
