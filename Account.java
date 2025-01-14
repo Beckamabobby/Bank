@@ -59,6 +59,34 @@ public class Account {
         while (true) {
             System.out.println("Who do you want to transfer money to?");
             String in = Main.scanner.nextLine();
+            Integer check = Main.getIndex(in);
+            if (check == null) {
+                System.out.println("That is not a valid username");
+                continue;
+            }
+            index = check;
+            break;
+        }
+        while (true) {
+            System.out.println("How much do you want to transfer");
+            String in = Main.scanner.nextLine();
+            try {
+                int amount = Integer.parseInt(in);
+                if (amount < 0) {
+                    System.out.println("You cannot transfer negative money");
+                    continue;
+                }
+                if (amount > shmoney) {
+                    System.out.println("You cannot transfer more money than you have");
+                    continue;
+                }
+                Main.accounts.get(index).shmoney += amount;
+                shmoney -= amount;
+                break;
+            }
+            catch (NumberFormatException e) {
+                System.out.println("That is not a number");
+            }
         }
     }
 }
