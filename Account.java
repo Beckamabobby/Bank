@@ -58,6 +58,9 @@ public class Account {
         while (true) {
             System.out.println("How much money do you want to deposit?");
             String in = Main.scanner.nextLine();
+            if (in.equals("quit")) {
+                return;
+            }
             try {
                 double change = Double.parseDouble(in);
                 if (change < 0) {
@@ -81,6 +84,9 @@ public class Account {
         while (true) {
             System.out.println("How much money do you want to withdraw?");
             String in = Main.scanner.nextLine();
+            if (in.equals("quit")) {
+                return;
+            }
             try {
                 double change = Double.parseDouble(in);
                 if (change < 0) {
@@ -110,6 +116,13 @@ public class Account {
         while (true) {
             System.out.println("Who do you want to transfer money to?");
             String in = Main.scanner.nextLine();
+            if (in.equals("quit")) {
+                return;
+            }
+            if (in.equals(name)) {
+                System.out.println("You can't send money to yourself");
+                continue;
+            }
             Integer check = Main.getIndex(in);
             if (check == null) {
                 System.out.println("That is not a valid username");
@@ -122,6 +135,9 @@ public class Account {
         while (true) {
             System.out.println("How much do you want to transfer");
             String in = Main.scanner.nextLine();
+            if (in.equals("quit")) {
+                return;
+            }
             try {
                 int amount = Integer.parseInt(in);
                 if (amount < 0) {

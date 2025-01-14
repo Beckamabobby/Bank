@@ -35,6 +35,9 @@ class Main {
         while (true) {
             System.out.println("What do you want your username to be?");
             String name = scanner.nextLine();
+            if (name.equals("quit")) {
+                return;
+            }
             for (Account account: accounts) {
                 if (account.name == name) {
                     System.out.println("That name is taken");
@@ -42,23 +45,34 @@ class Main {
                 }
             }
             System.out.println("What do you want your password to be?");
-            accounts.add(new Account(name, scanner.nextLine()));
+            String pass = scanner.nextLine();
+            if (pass.equals("quit")) {
+                return;
+            }
+            accounts.add(new Account(name, pass));
             break;
         }
     }
+    // true: quit, false: relogin
     public static boolean login() {
         while (true) {
             System.out.println("Username:");
             String name = scanner.nextLine();
+            if (name.equals("quit")) {
+                return false;
+            }
             System.out.println("Password:");
             String pass = scanner.nextLine();
+            if (pass.equals("quit")) {
+                return false;
+            }
             Integer index = getIndex(name);
             if (index == null) {
-                System.out.println("There is a mistake in your username or password1");
+                System.out.println("There is a mistake in your username or password");
                 continue;
             }
             if (!pass.equals(accounts.get(index).password)) {
-                System.out.println("There is a mistake in your username or password2");
+                System.out.println("There is a mistake in your username or password");
                 continue;
             }
             return accounts.get(index).sequence();
