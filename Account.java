@@ -52,7 +52,8 @@ public class Account {
         }
     }
     public void check() {
-        System.out.println("You have $" + shmoney);
+        double display = Math.round(shmoney*100)/100;
+        System.out.println("You have $" + display);
     }
     public void deposit() {
         while (true) {
@@ -139,7 +140,7 @@ public class Account {
                 return;
             }
             try {
-                int amount = Integer.parseInt(in);
+                double amount = Double.parseDouble(in);
                 if (amount < 0) {
                     System.out.println("You cannot transfer negative money");
                     continue;
