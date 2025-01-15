@@ -1,26 +1,33 @@
 import java.lang.NumberFormatException;
 public class Account {
     String name;
-    double shmoney = 0.00;
     String password;
     String[][] history = new String[5][1];
-    public Account(String name, String password, double shmoney) {
-        this.name = name;
-        this.password = password;
-        this.shmoney = shmoney;
-    }
+//    public Account(String name, String password, double shmoney) {
+//        this.name = name;
+//        this.password = password;
+//        this.shmoney = shmoney;
+//    }
     public Account(String name, String password) {
         this.name = name;
         this.password = password;
     }
-    public String toString() {
-        String out = "";
-        out += "\nname: " + name;
-        out += "\nmoney: " + shmoney;
-        out += "\npassword: " + password + "\n";
-        return out;
+
+    private void editMonee(double input) {
+        Main.monee[Main.getIndex(name)] = input;
     }
-    // true: quit, false: relogin
+
+    private double getMonee() {
+        return Main.monee[Main.getIndex(name)];
+    }
+//    public String toString() {
+//        String out = "";
+//        out += "\nname: " + name;
+//        out += "\nmoney: " + shmoney;
+//        out += "\npassword: " + password + "\n";
+//        return out;
+//    }
+    // true: quit, false: re-login
     public boolean sequence() {
         while (true) {
             System.out.println("What do you want to do?");
@@ -52,7 +59,7 @@ public class Account {
         }
     }
     public void check() {
-        double display = Math.round(shmoney*100)/100;
+        double display = Math.round(getMonee()*100.0)/100.0;
         System.out.println("You have $" + display);
     }
     public void deposit() {
@@ -71,9 +78,9 @@ public class Account {
                 String[] hist = new String[3];
                 hist[0] = "Deposited";
                 hist[1] = "$"+change;
-                hist[2] = shmoney + " -> " + (shmoney+change);
+                hist[2] = getMonee() + " -> " + (getMonee()+change);
                 addHistory(hist);
-                shmoney += change;
+                editMonee(getMonee() + change);
                 break;
             }
             catch (NumberFormatException e) {
@@ -94,16 +101,16 @@ public class Account {
                     System.out.println("You can't withdraw a negative amount");
                     continue;
                 }
-                if (change > shmoney) {
+                if (change > getMonee()) {
                     System.out.println("You can't withdraw more money than you have");
                     continue;
                 }
                 String[] hist = new String[4];
                 hist[0] = "Withdrew";
                 hist[1] = "$"+change;
-                hist[2] = shmoney + " -> " + (shmoney-change);
+                hist[2] = getMonee() + " -> " + (getMonee() - change);
                 addHistory(hist);
-                shmoney -= change;
+                editMonee(getMonee() - change);
                 break;
             }
             catch (NumberFormatException e) {
@@ -145,7 +152,7 @@ public class Account {
                     System.out.println("You cannot transfer negative money");
                     continue;
                 }
-                if (amount > shmoney) {
+                if (amount > getMonee()) {
                     System.out.println("You cannot transfer more money than you have");
                     continue;
                 }
@@ -153,17 +160,17 @@ public class Account {
                 hist[0] = "Transfered";
                 hist[1] = "$"+amount;
                 hist[2] = "to " + target;
-                hist[3] = shmoney + " -> " + (shmoney-amount);
-                hist[4] = Main.accounts.get(index).shmoney + " -> " + (Main.accounts.get(index).shmoney+amount);
+                hist[3] = getMonee() + " -> " + (getMonee()-amount);
+                hist[4] = Main.monee[index] + " -> " + (Main.monee[index] + amount);
                 addHistory(hist);
                 String[] otherHist = new String[4];
                 otherHist[0] = "Recieved";
                 otherHist[1] = "$"+amount;
                 otherHist[2] = "From " + name;
-                otherHist[3] = Main.accounts.get(index).shmoney + " -> " + (Main.accounts.get(index).shmoney+amount);
+                otherHist[3] = Main.monee[index] + " -> " + (Main.monee[index] + amount);
                 Main.accounts.get(index).addHistory(otherHist);
-                Main.accounts.get(index).shmoney += amount;
-                shmoney -= amount;
+                Main.monee[index] += amount;
+                editMonee(getMonee() - amount);
                 break;
             }
             catch (NumberFormatException e) {

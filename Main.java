@@ -3,6 +3,7 @@ import java.util.ArrayList;
 class Main {
     public static Scanner scanner = new Scanner(System.in);
     public static ArrayList<Account> accounts = new ArrayList<Account>();
+    public static double[] monee = new double[0];
     public static void main(String[] args) {
         sequence();
         scanner.close();
@@ -39,7 +40,7 @@ class Main {
                 return;
             }
             for (Account account: accounts) {
-                if (account.name == name) {
+                if (account.name.equals(name)) {
                     System.out.println("That name is taken");
                     continue;
                 }
@@ -50,6 +51,7 @@ class Main {
                 return;
             }
             accounts.add(new Account(name, pass));
+            updateMonee(0);
             break;
         }
     }
@@ -86,5 +88,15 @@ class Main {
             }
         }
         return null;
+    }
+
+    public static void updateMonee(double noo) {
+        double[] temp = monee.clone();
+        monee = new double[monee.length+1];
+        for (int i = 0; i < temp.length; i++) {
+            monee[i] = temp[i];
+        }
+        monee[monee.length-1] = noo;
+
     }
 }
